@@ -67,9 +67,17 @@ namespace HealthcareManagementSystem
                 Console.WriteLine("10. Exit");
                 Console.WriteLine("Choose option: ");
 
-                int choice = int.Parse(Console.ReadLine());
+                int choice = 0;
+                try
+                {
+                    choice = int.Parse(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input. Please choose a number from 1 to 10.");
+                }
 
-                switch(choice)
+                switch (choice)
                 {
                     case 1: //Register New Patient
 
@@ -138,71 +146,100 @@ namespace HealthcareManagementSystem
 
 
                     case 3: //Discharge Patient
-                        Console.WriteLine("Enter patient ID or name");
-                        string DischargeInput = Console.ReadLine();
+                        Console.Write("Enter Patient ID or Name: ");
+                        string dischargeInput = Console.ReadLine();
 
-                        double TotalBill = 0;
+                        bool dischargeFound = false;
 
-                        bool DischargeaPtientFound = false;
                         for (int i = 0; i <= lastPatientIndex; i++)
                         {
-                            if (patientNames[i] == DischargeInput || patientIDs[i] == DischargeInput)
+                            if (patientNames[i] == dischargeInput || patientIDs[i] == dischargeInput)
                             {
-                                DischargeaPtientFound = true; 
+                                dischargeFound = true;
 
-                                if(admitted[i] == true)
+                                if (admitted[i] == true)
                                 {
-                                    Console.WriteLine("Was there a consultation fee? (yes/no)");
-                                    string consultation = Console.ReadLine().ToLower();
-                                    
-                                    if(consultation == "yes")
+                                    double visitCharges = 0;
+
+                                    Console.Write("Was there a consultation fee? (yes/no): ");
+                                    string hasFee = Console.ReadLine().ToLower();
+
+                                    if (hasFee == "yes")
                                     {
-                                        Console.WriteLine("Enter fee amount");
-                                        double feeAmount = double.Parse(Console.ReadLine());
-                                        TotalBill += feeAmount;
+                                        Console.Write("Enter consultation fee amount: ");
+                                        double fee = 0;
+                                        try
+                                        {
+                                            fee = double.Parse(Console.ReadLine());
+                                            if (fee > 0)
+                                            {
+                                                billingAmount[i] += fee;
+                                                visitCharges += fee;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("The amount is invalid");
+                                            }
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Console.WriteLine("Invalid amount. Please enter a valid number.");
+                                        }
                                     }
 
+                                    Console.Write("Any medication charges? (yes/no): ");
+                                    string hasMeds = Console.ReadLine().ToLower();
 
-                                    Console.WriteLine("Any medication charges? (yes/no)");
-                                    string medication = Console.ReadLine().ToLower();
-
-                                    if (medication == "yes")
+                                    if (hasMeds == "yes")
                                     {
-                                        Console.WriteLine("Enter medication amount");
-                                        double medicationAmount = double.Parse(Console.ReadLine());
-                                        TotalBill += medicationAmount;
+                                        Console.Write("Enter medication charges amount: ");
+                                        double meds = 0;
+                                        try
+                                        {
+                                            meds = double.Parse(Console.ReadLine());
+                                            if (meds > 0)
+                                            {
+                                                billingAmount[i] += meds;
+                                                visitCharges += meds;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("The amount is invalid");
+                                            }
+                                            
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Console.WriteLine("Invalid amount. Please enter a valid number.");
+                                        }
+
                                     }
 
-                                    billingAmount[i] += TotalBill;
+                                    if (visitCharges > 0)
+                                    {
+                                        Console.WriteLine("Total charges added this visit: " + visitCharges + " OMR");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No charges recorded for this visit");
+                                    }
+
                                     admitted[i] = false;
                                     assignedDoctors[i] = "";
 
-                                if (TotalBill > 0)
-                                    {
-                                        Console.WriteLine("Total charges added this visit: " +  TotalBill + "OMR");
-                                    }
-
-                                else
-                                    {
-                                        Console.WriteLine("No charges recorded for this visit");
-                                    } 
-
                                     Console.WriteLine("Patient discharged successfully!");
-                                    break;
                                 }
-
                                 else
                                 {
                                     Console.WriteLine("This patient is not currently admitted");
-
                                 }
-                            }
 
+                                break;
+                            }
                         }
 
-                        if (DischargeaPtientFound == false)
+                        if (dischargeFound == false)
                         {
-
                             Console.WriteLine("Patient not found");
                         }
 
@@ -354,7 +391,15 @@ namespace HealthcareManagementSystem
                         Console.WriteLine("2. Individual patient");
                         Console.WriteLine("Choose option: ");
 
-                        int option = int.Parse(Console.ReadLine());
+                        int option = 0;
+                        try
+                        {
+                            option = int.Parse(Console.ReadLine());
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Invalid input. Please enter 1 or 2.");
+                        }
 
                         double totalBilling = 0;
 
