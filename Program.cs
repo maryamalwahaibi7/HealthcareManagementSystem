@@ -17,6 +17,10 @@ namespace HealthcareManagementSystem
             string[] departments = new string[100];     // e.g. "Cardiology", "Orthopedics"
             int[] visitCount = new int[100];        // how many times admitted
             double[] billingAmount = new double[100];     // total fees owed
+            string[] lastVisitDate = new string[100];
+            string[] lastDischargeDate = new string[100];
+            int[] daysInHospital = new int[100];
+            string[] bloodType = new string[100];
             int lastPatientIndex = 0;
 
             //Seed Data
@@ -28,6 +32,10 @@ namespace HealthcareManagementSystem
             departments[lastPatientIndex] = "General";
             visitCount[lastPatientIndex] = 2;
             billingAmount[lastPatientIndex] = 0;
+            lastVisitDate[lastPatientIndex] = "2025-01-10";
+            lastDischargeDate[lastPatientIndex] = "2025-01-15";
+            daysInHospital[lastPatientIndex] = 12;
+            bloodType[lastPatientIndex] = "A+";
 
             lastPatientIndex++;
 
@@ -39,6 +47,10 @@ namespace HealthcareManagementSystem
             departments[lastPatientIndex] = "Orthopedics";
             visitCount[lastPatientIndex] = 4;
             billingAmount[lastPatientIndex] = 0;
+            lastVisitDate[lastPatientIndex] = "2025-03-02";
+            lastDischargeDate[lastPatientIndex] = "";
+            daysInHospital[lastPatientIndex] = 8;
+            bloodType[lastPatientIndex] = "O-";
 
             lastPatientIndex++;
 
@@ -50,6 +62,10 @@ namespace HealthcareManagementSystem
             departments[lastPatientIndex] = "Cardiology";
             visitCount[lastPatientIndex] = 1;
             billingAmount[lastPatientIndex] = 0;
+            lastVisitDate[lastPatientIndex] = "2024-12-20";
+            lastDischargeDate[lastPatientIndex] = "2024-12-28";
+            daysInHospital[lastPatientIndex] = 5;
+            bloodType[lastPatientIndex] = "B+";
 
             lastPatientIndex++;
 
