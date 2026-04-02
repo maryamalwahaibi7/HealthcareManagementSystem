@@ -21,7 +21,7 @@ namespace HealthcareManagementSystem
 
             //Seed Data
             patientNames[lastPatientIndex] = "Ali Hassan";
-            patientIDs[lastPatientIndex] = "P001";
+            patientIDs[lastPatientIndex] = "P000";
             diagnoses[lastPatientIndex] = "Flu";
             admitted[lastPatientIndex] = false;
             assignedDoctors[lastPatientIndex] = "";
@@ -32,7 +32,7 @@ namespace HealthcareManagementSystem
             lastPatientIndex++;
 
             patientNames[lastPatientIndex] = "Sara Ahmed";
-            patientIDs[lastPatientIndex] = "P002";
+            patientIDs[lastPatientIndex] = "P001";
             diagnoses[lastPatientIndex] = "Fracture";
             admitted[lastPatientIndex] = true;
             assignedDoctors[lastPatientIndex] = "Dr. Noor";
@@ -43,13 +43,15 @@ namespace HealthcareManagementSystem
             lastPatientIndex++;
 
             patientNames[lastPatientIndex] = "Omar Khalid";
-            patientIDs[lastPatientIndex] = "P003";
+            patientIDs[lastPatientIndex] = "P002";
             diagnoses[lastPatientIndex] = "Diabetes";
             admitted[lastPatientIndex] = false;
             assignedDoctors[lastPatientIndex] = "";
             departments[lastPatientIndex] = "Cardiology";
             visitCount[lastPatientIndex] = 1;
             billingAmount[lastPatientIndex] = 0;
+
+            lastPatientIndex++;
 
             bool exit = false;
             while (exit == false)
@@ -81,13 +83,11 @@ namespace HealthcareManagementSystem
                 {
                     case 1: //Register New Patient
 
-                        lastPatientIndex++;
-
                         Console.WriteLine("Name: ");
                         patientNames[lastPatientIndex] = Console.ReadLine();
 
-                        Console.WriteLine("Patient ID: "); 
-                        patientIDs[lastPatientIndex] = Console.ReadLine();
+                        //Console.WriteLine("Patient ID: "); 
+                        //patientIDs[lastPatientIndex] = Console.ReadLine();
 
                         Console.WriteLine("Diagnosis: ");
                         diagnoses[lastPatientIndex] = Console.ReadLine();
@@ -95,15 +95,18 @@ namespace HealthcareManagementSystem
                         Console.WriteLine("Department: ");
                         departments[lastPatientIndex] = Console.ReadLine();
 
+                        patientIDs[lastPatientIndex] = "P" + lastPatientIndex.ToString("D3") ; 
                         admitted[lastPatientIndex] = false;
                         assignedDoctors[lastPatientIndex] = "";
                         visitCount[lastPatientIndex] = 0;
                         billingAmount[lastPatientIndex] = 0;
 
-                        Console.WriteLine("Patient registered successfully!");
+
+                        Console.WriteLine("Patient registered successfully with ID: " + patientIDs[lastPatientIndex]);
+                        lastPatientIndex++;
+
                         break;
 
-                        
                     case 2: //Admit Patient
                         Console.WriteLine("Enter patient ID or name");
                         string AdmitInput = Console.ReadLine();
@@ -123,7 +126,16 @@ namespace HealthcareManagementSystem
                                     visitCount[i]++;
 
                                     Console.WriteLine("Patient admitted successfully and assigned to doctor: " + assignedDoctors[i]);
-                                    Console.WriteLine("This patient has been admitted " + visitCount[i] + " times"); 
+
+                                    if (visitCount[i] > 1)
+                                    {
+                                        Console.WriteLine("This patient has been admitted " + visitCount[i] + " times");
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("The patient is being admitted for the first time.");
+                                    }
                                 }
 
                                 else
@@ -288,6 +300,7 @@ namespace HealthcareManagementSystem
                     case 5: //List All Admitted Patients
                         Console.WriteLine("Admitted Patients: ");
 
+                        int admittedCount = 0; 
                         bool AdmittedFound = false;
                         for (int i = 0; i <= lastPatientIndex; i++)
                         {
@@ -299,8 +312,14 @@ namespace HealthcareManagementSystem
                                 Console.WriteLine("Diagnosis: " + diagnoses[i]);
                                 Console.WriteLine("Department: "+ departments[i]);
                                 Console.WriteLine("Assigned doctor: " + assignedDoctors[i]);
+                                admittedCount++;
                             }
 
+                        }
+
+                        if (admittedCount > 0)
+                        {
+                            Console.WriteLine("Total admitted patients: " + admittedCount);
                         }
 
                         if (AdmittedFound == false)
@@ -318,18 +337,22 @@ namespace HealthcareManagementSystem
                         Console.WriteLine("Enter new doctor name");
                         string NewDoctor = Console.ReadLine();
 
+                        if (CurrentDoctor == NewDoctor)
+                        {
+                            Console.WriteLine("Transfer cancelled: the current doctor and the new doctor must be different.");
+                            break;
+                        }
+
                         bool CurrentDoctorFound = false;
-                        int CurrentDoctorIndex = 0;
+                       
                         for (int i = 0; i <= lastPatientIndex; i++)
                         {
                             if(CurrentDoctor == assignedDoctors[i] && admitted[i] == true)
                             {
-                                CurrentDoctorFound = true;
-                                CurrentDoctorIndex = i;
-                                assignedDoctors[CurrentDoctorIndex] = NewDoctor;
+                                CurrentDoctorFound = true; 
+                                assignedDoctors[i] = NewDoctor;
                                 Console.WriteLine("Patient: " + patientNames[i] + " has been transferred to: " + NewDoctor);
                                 break;
-
                             }
                         }
 
@@ -340,7 +363,6 @@ namespace HealthcareManagementSystem
                         }
 
                         break;
-
 
                     case 7: //View Most Visited Patients
                         Console.WriteLine("Most Visited Patients: ");
@@ -361,29 +383,26 @@ namespace HealthcareManagementSystem
                     case 8: //Search Patients by Department 
                         Console.WriteLine("Enter department name: ");
                         string DepartmentName = Console.ReadLine();
-                        
+
                         Console.WriteLine("Patients in department '" + DepartmentName + "':");
 
                         bool DepartmentFound = false;
                         for (int i = 0; i <= lastPatientIndex; i++)
                         {
-                            if(departments[i].ToLower() == DepartmentName.ToLower())
+                            if (departments[i] != null && departments[i].ToLower().Contains(DepartmentName.ToLower()))
                             {
                                 DepartmentFound = true;
                                 string AdmissionStatus = admitted[i] ? "Admitted" : "Not Admitted";
                                 Console.WriteLine("Name: " + patientNames[i] + " | ID: " + patientIDs[i] + " | Diagnosis: " + diagnoses[i] + " | Admission Status: " + AdmissionStatus);
                             }
-
                         }
 
                         if (DepartmentFound == false)
                         {
-
                             Console.WriteLine("No patients found in this department");
                         }
 
                         break;
-
 
                     case 9:
                         Console.WriteLine("Billing Report");
@@ -424,7 +443,16 @@ namespace HealthcareManagementSystem
                                 if (patientNames[i] == Input || patientIDs[i] == Input)
                                 {
                                     BillingFound = true;
-                                    Console.WriteLine("Total billing: " + billingAmount[i] + " OMR");
+
+                                    if(billingAmount[i] > 0)
+                                    {
+                                        Console.WriteLine("Total billing: " + billingAmount[i] + " OMR");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No billing records");
+                                    }
+
                                     break;
 
                                 }
@@ -441,10 +469,21 @@ namespace HealthcareManagementSystem
 
 
                     case 10: //Exit
-                        Console.WriteLine("Exiting system...");
-                        Console.WriteLine("Thank you for using the Healthcare Management System!");
-                        exit = true;
-                        break;
+                        Console.WriteLine("Are you sure you want to exit? (yes/no)");
+                        string input = Console.ReadLine();
+
+                        if(input == "yes")
+                        {
+                            Console.WriteLine("Exiting system...");
+                            Console.WriteLine("Thank you for using the Healthcare Management System!");
+                            exit = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Exit cancelled. Returning to main menu."); 
+                        }
+
+                            break;
 
                     default:
                         Console.WriteLine("Invalid option. Please try again."); 
