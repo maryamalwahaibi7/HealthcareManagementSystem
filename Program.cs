@@ -17,8 +17,8 @@ namespace HealthcareManagementSystem
             string[] departments = new string[100];     // e.g. "Cardiology", "Orthopedics"
             int[] visitCount = new int[100];        // how many times admitted
             double[] billingAmount = new double[100];     // total fees owed
-            string[] lastVisitDate = new string[100];
-            string[] lastDischargeDate = new string[100];
+            DateTime[] lastVisitDate = new DateTime[100];
+            DateTime[] lastDischargeDate = new DateTime[100];
             int[] daysInHospital = new int[100];
             string[] bloodType = new string[100];
             int lastPatientIndex = 0;
@@ -32,8 +32,8 @@ namespace HealthcareManagementSystem
             departments[lastPatientIndex] = "General";
             visitCount[lastPatientIndex] = 2;
             billingAmount[lastPatientIndex] = 0;
-            lastVisitDate[lastPatientIndex] = "2025-01-10";
-            lastDischargeDate[lastPatientIndex] = "2025-01-15";
+            lastVisitDate[lastPatientIndex] = DateTime.Parse("2025-01-10");
+            lastDischargeDate[lastPatientIndex] = DateTime.Parse("2025-01-15");
             daysInHospital[lastPatientIndex] = 12;
             bloodType[lastPatientIndex] = "A+";
 
@@ -47,8 +47,8 @@ namespace HealthcareManagementSystem
             departments[lastPatientIndex] = "Orthopedics";
             visitCount[lastPatientIndex] = 4;
             billingAmount[lastPatientIndex] = 0;
-            lastVisitDate[lastPatientIndex] = "2025-03-02";
-            lastDischargeDate[lastPatientIndex] = "";
+            lastVisitDate[lastPatientIndex] = DateTime.Parse("2025-03-02");
+            lastDischargeDate[lastPatientIndex] = DateTime.MinValue;
             daysInHospital[lastPatientIndex] = 8;
             bloodType[lastPatientIndex] = "O-";
 
@@ -62,8 +62,8 @@ namespace HealthcareManagementSystem
             departments[lastPatientIndex] = "Cardiology";
             visitCount[lastPatientIndex] = 1;
             billingAmount[lastPatientIndex] = 0;
-            lastVisitDate[lastPatientIndex] = "2024-12-20";
-            lastDischargeDate[lastPatientIndex] = "2024-12-28";
+            lastVisitDate[lastPatientIndex] = DateTime.Parse("2024-12-20");
+            lastDischargeDate[lastPatientIndex] = DateTime.Parse("2024-12-28");
             daysInHospital[lastPatientIndex] = 5;
             bloodType[lastPatientIndex] = "B+";
 
@@ -100,27 +100,27 @@ namespace HealthcareManagementSystem
                     case 1: //Register New Patient
 
                         Console.WriteLine("Name: ");
-                        patientNames[lastPatientIndex] = Console.ReadLine();
+                        patientNames[lastPatientIndex] = Console.ReadLine().Trim();
 
                         //Console.WriteLine("Patient ID: "); 
                         //patientIDs[lastPatientIndex] = Console.ReadLine();
 
                         Console.WriteLine("Diagnosis: ");
-                        diagnoses[lastPatientIndex] = Console.ReadLine();
+                        diagnoses[lastPatientIndex] = Console.ReadLine().Trim();
 
                         Console.WriteLine("Department: ");
-                        departments[lastPatientIndex] = Console.ReadLine();
+                        departments[lastPatientIndex] = Console.ReadLine().Trim();
 
                         Console.WriteLine("Enter patient's blood type: ");
-                        bloodType[lastPatientIndex] = Console.ReadLine();
+                        bloodType[lastPatientIndex] = Console.ReadLine().ToUpper();
 
                         patientIDs[lastPatientIndex] = "P" + lastPatientIndex.ToString("D3") ; 
                         admitted[lastPatientIndex] = false;
                         assignedDoctors[lastPatientIndex] = "";
                         visitCount[lastPatientIndex] = 0;
                         billingAmount[lastPatientIndex] = 0;
-                        lastVisitDate[lastPatientIndex] = "";
-                        lastDischargeDate[lastPatientIndex] = "";
+                        lastVisitDate[lastPatientIndex] = DateTime.MinValue;
+                        lastDischargeDate[lastPatientIndex] = DateTime.MinValue;
                         daysInHospital[lastPatientIndex] = 0;
 
 
@@ -148,8 +148,8 @@ namespace HealthcareManagementSystem
                                     visitCount[i]++;
 
                                     Console.WriteLine("Enter admission date (YYYY-MM-DD):");
-                                    lastVisitDate[i] = Console.ReadLine();
-                                    lastDischargeDate[i] = "";
+                                    lastVisitDate[i] = DateTime.Parse(Console.ReadLine());
+                                    lastDischargeDate[i] = DateTime.MinValue; 
 
                                     Console.WriteLine("Patient admitted successfully and assigned to doctor: " + assignedDoctors[i]);
                                     Console.WriteLine("Admission date: " + lastVisitDate[i]); 
@@ -268,7 +268,7 @@ namespace HealthcareManagementSystem
                                     Console.WriteLine("Patient discharged successfully!");
 
                                     Console.WriteLine("Enter discharge date (YYYY-MM-DD):");
-                                    lastDischargeDate[i] = Console.ReadLine();
+                                    lastDischargeDate[i] = DateTime.Parse(Console.ReadLine()); 
 
                                     Console.WriteLine("Enter number of days the patient spent in hospital:");
                                     int days = int.Parse(Console.ReadLine());
@@ -318,7 +318,7 @@ namespace HealthcareManagementSystem
                                 {
                                     Console.WriteLine("Assigned doctor: " + assignedDoctors[i]);
                                 }
-                                if (lastVisitDate[i] == "")
+                                if (lastVisitDate[i] == DateTime.MinValue)
                                 {
                                     Console.WriteLine("Last Visit Date: No admission recorded"); 
                                 }
@@ -326,7 +326,7 @@ namespace HealthcareManagementSystem
                                 {
                                     Console.WriteLine("Last Visit Date: " + lastVisitDate[i]);
                                 }
-                                if (lastDischargeDate[i] == "")
+                                if (lastDischargeDate[i] == DateTime.MinValue)
                                 {
                                     Console.WriteLine("Last Discharge Date: Still admitted");
                                 }
