@@ -21,6 +21,12 @@ namespace HealthcareManagementSystem
         static int[] daysInHospital = new int[100];
         static string[] bloodType = new string[100];
         static int lastPatientIndex = 0;
+        //New Array Declarations For Doctor Management Module 
+        static string[] doctorNames = new string[50]; 
+        static int[] doctorAvailableSlots = new int[50];
+        static int[] doctorVisitCount = new int[50];
+        static int lastDoctorIndex = 0; 
+
 
         static public void DisplayMenu()
         {
@@ -35,6 +41,8 @@ namespace HealthcareManagementSystem
             Console.WriteLine("8. Search Patients by Department");
             Console.WriteLine("9. Billing Report");
             Console.WriteLine("10. Exit");
+            Console.WriteLine("11. Add Doctor");
+            Console.WriteLine("12. Doctor Salary Report");
         }
         static public void SeedData()
         {
@@ -83,6 +91,29 @@ namespace HealthcareManagementSystem
             bloodType[lastPatientIndex] = "B+";
 
             lastPatientIndex++;
+
+            //Doctor 1
+            doctorNames[lastDoctorIndex] = "Dr. Noor";
+            doctorAvailableSlots[lastDoctorIndex] = 5;
+            doctorVisitCount[lastDoctorIndex] = 0;
+
+            lastDoctorIndex++;
+
+            //Doctor 2
+            doctorNames[lastDoctorIndex] = "Dr. Salem";
+            doctorAvailableSlots[lastDoctorIndex] = 3;
+            doctorVisitCount[lastDoctorIndex] = 0;
+
+            lastDoctorIndex++; 
+
+            //Doctor 3
+            doctorNames[lastDoctorIndex] = "Dr. Hana";
+            doctorAvailableSlots[lastDoctorIndex] = 8;
+            doctorVisitCount[lastDoctorIndex] = 0;
+
+            lastDoctorIndex++;
+
+
         }
         static public string RegisterPatient(string Name, string Diagnosis, string Department, string BloodType)
         {
