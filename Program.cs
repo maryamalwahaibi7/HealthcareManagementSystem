@@ -199,16 +199,16 @@
                         Console.WriteLine("Enter patient's blood type: ");
                         string blood = (Console.ReadLine() ?? string.Empty).ToUpper();
 
-                        string PID = RegisterPatient(name, diagnosis, department, blood);
-
-                        Console.WriteLine("Patient ID: " + PID);
-
-                        // التحقق من امتلاء المصفوفة
-                        if (lastPatientIndex >= patientNames.Length - 1)
+                        // Check array capacity before registering a new patient
+                        if (lastPatientIndex >= patientNames.Length)
                         {
                             Console.WriteLine("Patient registry is full.");
                             break;
                         }
+
+                        string PID = RegisterPatient(name, diagnosis, department, blood);
+
+                        Console.WriteLine("Patient ID: " + PID);
 
                         lastPatientIndex++;
 
@@ -567,7 +567,7 @@
 
                     case 7: //View Most Visited Patients
                         Console.WriteLine("Most Visited Patients: ");
-                        for (int count = 100; count >= 0; count--)
+                        for (int count = lastPatientIndex; count >= 0; count--)
                         {
                             for (int i = 0; i <= lastPatientIndex; i++)
                             {
@@ -794,11 +794,10 @@
                                 highestDoctorIndex = i;
                             }
 
-                            double maxSalary = Math.Max(highestSalary, salary);
-
-                            if (maxSalary != highestSalary)
+                            // Fixed highest salary logic to handle equal values correctly
+                            if (salary >= highestSalary)
                             {
-                                highestSalary = maxSalary;
+                                highestSalary = salary;
                                 highestDoctorIndex = i;
                             }
                         }
